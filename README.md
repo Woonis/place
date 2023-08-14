@@ -2,12 +2,14 @@
 - KaKao와 Naver의 open api를 사용한 장소 검색 서비스를 제공합니다.
 
 # 환경
-- Java 17 / Spring Boot 3.0.4
+- Java 17이상 / Spring Boot 3.0.4
 - gradle.kotlin 버젼 기반
 - DB: H2, flyway
 - Spock 기반 테스트 케이스
 
 # 빌드 결과물
+[place-api-1.0-SNAPSHOT-boot.jar]()
+실행 : java -jar place-api-1.0-SNAPSHOT-boot.jar
 
 
 # 프로젝트 구성
@@ -29,6 +31,7 @@ place
 4. 통계에 대한 디비는 H2디비의 로컬 디비를 사용하며, flyway의 수행을 통해 첫 데이터는 자동 init되어 진다.
 5. 통계 디비에 대한 쿼리는 query dsl을 사용하여 쿼리를 수행하게 된다.
 6. 테스트는 spock을 통해 어플리케이션 단의 테스트 코드를 수행한다.
+7. 외부 api 호출시 장애는, 오류가 지속되면 호출하지 않도록 한다.
 
 # API spec
 ## 1. 장소 검색
