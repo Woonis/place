@@ -1,7 +1,7 @@
 package sample.wooni.place.naver.converter;
 
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
+import sample.wooni.place.common.ValueConvertUtils;
 import sample.wooni.place.service.output.naver.response.NaverPlaceDetail;
 import sample.wooni.place.service.output.naver.response.NaverPlaceResponse;
 import sample.wooni.place.service.search.dto.PlaceSearchResultDetailDto;
@@ -24,25 +24,16 @@ public class NaverPlaceConverter {
                 .map(NaverPlaceConverter::convert)
                 .collect(Collectors.toList());
     }
+
     private PlaceSearchResultDetailDto convert(NaverPlaceDetail detail) {
-        var formattedTitle = reformatTitle(detail.title());
+        var formattedTitle = ValueConvertUtils.convertTitle(detail.title());
         return PlaceSearchResultDetailDto.builder()
                 .type(PlaceSearchType.NAVER)
                 .keyword(formattedTitle)
-                .category(detail.category())
-                .address(reformatAddress(detail.address(), formattedTitle))
-                .roadAddress(reformatAddress(detail.roadAddress(), formattedTitle))
+                .address(ValueConvertUtils.convertAddress((detail.address())))
+                .roadAddress(ValueConvertUtils.convertAddress((detail.roadAddress())))
                 .x(BigDecimal.valueOf(detail.mapx()))
                 .y(BigDecimal.valueOf(detail.mapy()))
                 .build();
-    }
-
-    // TODO 고도화 필요.
-    private String reformatAddress(String address, String title) {
-        return address.replaceAll(title, StringUtils.EMPTY);
-    }
-
-    private String reformatTitle(String value) {
-        return value.trim().replaceAll("<[^>]*>", StringUtils.EMPTY);
     }
 }

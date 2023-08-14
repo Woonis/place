@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 public record PlaceSearchResultDetailDto(
         PlaceSearchType type,
         String keyword,
-        String category,
         String address,
         String roadAddress,
         BigDecimal x,
@@ -15,19 +14,6 @@ public record PlaceSearchResultDetailDto(
 ) {
 
     @Builder
-    public PlaceSearchResultDetailDto(PlaceSearchType type,
-                                      String keyword,
-                                      String category,
-                                      String address,
-                                      String roadAddress,
-                                      BigDecimal x,
-                                      BigDecimal y) {
-        this.type = type;
-        this.keyword = keyword;
-        this.category = category;
-        this.address = address;
-        this.roadAddress = roadAddress;
-        this.x = x;
-        this.y = y;
+    public PlaceSearchResultDetailDto {
     }
 }

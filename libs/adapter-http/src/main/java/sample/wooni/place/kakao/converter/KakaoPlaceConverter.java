@@ -1,7 +1,7 @@
 package sample.wooni.place.kakao.converter;
 
 import lombok.experimental.UtilityClass;
-import sample.wooni.place.common.GeoConvertUtil;
+import sample.wooni.place.common.ValueConvertUtils;
 import sample.wooni.place.service.output.kakao.response.KakaoPlaceDetail;
 import sample.wooni.place.service.output.kakao.response.KakaoPlaceResponse;
 import sample.wooni.place.service.search.dto.PlaceSearchResultDetailDto;
@@ -25,13 +25,12 @@ public class KakaoPlaceConverter {
     }
 
     private PlaceSearchResultDetailDto convert(KakaoPlaceDetail detail) {
-        GeoConvertUtil.GeoDetailDto convertedGeo = GeoConvertUtil.convert(detail.x(), detail.y());
+        ValueConvertUtils.GeoDetailDto convertedGeo = ValueConvertUtils.convert(detail.x(), detail.y());
         return PlaceSearchResultDetailDto.builder()
                 .type(PlaceSearchType.KAKAO)
-                .keyword(detail.placeName().trim())
-                .category(detail.categoryName())
-                .address(detail.addressName())
-                .roadAddress(detail.roadAddressName())
+                .keyword(ValueConvertUtils.convertTitle(detail.placeName()))
+                .address(ValueConvertUtils.convertAddress(detail.addressName()))
+                .roadAddress(ValueConvertUtils.convertAddress(detail.roadAddressName()))
                 .x(convertedGeo.x())
                 .y(convertedGeo.y())
                 .build();
