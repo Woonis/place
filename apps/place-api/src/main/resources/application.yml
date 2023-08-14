@@ -4,6 +4,7 @@ spring:
   config:
     import:
       - 'classpath:adapter-http.yml'
+      - 'classpath:adapter-persistence.yml'
 
 management:
   endpoints:

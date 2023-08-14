@@ -8,6 +8,8 @@ import sample.wooni.place.service.search.dto.PlaceResponseDto;
 import sample.wooni.place.service.search.dto.PlaceSearchDto;
 import sample.wooni.place.service.search.dto.PlaceSearchResultDetailDto;
 import sample.wooni.place.service.search.external.ExternalPlaceSearchService;
+import sample.wooni.place.service.statistics.PlaceStatisticsService;
+import sample.wooni.place.service.statistics.dto.StatisticsCreateCommand;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,9 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class PlaceSearchServiceImpl implements PlaceSearchService {
     private List<ExternalPlaceSearchService> searchServices;
+    private final PlaceStatisticsService statisticsService;
 
-    public PlaceSearchServiceImpl(List<ExternalPlaceSearchService> searchServices) {
+    public PlaceSearchServiceImpl(List<ExternalPlaceSearchService> searchServices,
+                                  PlaceStatisticsService statisticsService) {
         this.searchServices = searchServices;
+        this.statisticsService = statisticsService;
     }
 
     @PostConstruct
@@ -52,6 +57,12 @@ public class PlaceSearchServiceImpl implements PlaceSearchService {
         }
 
         result.sort(Comparator.comparing(PlaceResponseDto::hitCount).reversed());
+
+        statisticsService.save(
+                StatisticsCreateCommand.builder()
+                        .keyword(request.keyword())
+                        .build()
+        );
         return result;
     }
 
