@@ -5,10 +5,12 @@ import lombok.Builder;
 import java.util.List;
 
 public record PlaceResponseDto(
-        List<String> results
+        String keyword,
+        PlaceSearchType type,
+        int hitCount,
+        List<String> relatedKeyword
 ) {
     @Builder
-    public PlaceResponseDto(List<String> results) {
-        this.results = results;
+    public PlaceResponseDto {
     }
 }

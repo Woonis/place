@@ -9,6 +9,8 @@ import sample.wooni.place.service.search.PlaceSearchService;
 import sample.wooni.place.service.search.dto.PlaceResponseDto;
 import sample.wooni.place.service.search.dto.PlaceSearchDto;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 public class PlaceSearchController {
@@ -20,7 +22,7 @@ public class PlaceSearchController {
     }
 
     @GetMapping("/api/v1/place")
-    public ResultResponse<PlaceResponseDto> search(@Valid PlaceSearchDto request) {
+    public ResultResponse<List<PlaceResponseDto>> search(@Valid PlaceSearchDto request) {
         return ResultResponse.ok(service.search(request));
     }
 }

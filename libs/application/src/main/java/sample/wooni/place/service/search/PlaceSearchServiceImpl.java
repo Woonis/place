@@ -1,6 +1,7 @@
 package sample.wooni.place.service.search;
 
 
+import com.google.common.collect.Lists;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,7 @@ import sample.wooni.place.service.search.dto.PlaceSearchDto;
 import sample.wooni.place.service.search.dto.PlaceSearchResultDetailDto;
 import sample.wooni.place.service.search.external.ExternalPlaceSearchService;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,13 +30,36 @@ public class PlaceSearchServiceImpl implements PlaceSearchService {
     }
 
     @Override
-    public PlaceResponseDto search(PlaceSearchDto request) {
-        var results = new ArrayList<PlaceSearchResultDetailDto>();
+    public List<PlaceResponseDto> search(PlaceSearchDto request) {
+        var searchResults = new ArrayList<PlaceSearchResultDetailDto>();
         searchServices.forEach(
-                it -> results.addAll(it.search(request.keyword()))
+                it -> searchResults.addAll(it.search(request.keyword()))
         );
 
-        log.info("size : {}", results.size());
-        return null;
+        Map<String, List<PlaceSearchResultDetailDto>> addressToDetailMap = searchResults.stream().collect(
+                Collectors.groupingBy(PlaceSearchResultDetailDto::roadAddress)
+        );
+
+        return addressToDetailMap.values().stream()
+                .filter(it -> it.size() > 0)
+                .map(this::buildResponse)
+                .sorted(Comparator.comparing(PlaceResponseDto::hitCount).reversed())
+                .toList();
     }
+
+    private PlaceResponseDto buildResponse(List<PlaceSearchResultDetailDto> details) {
+        var firstItem = details.get(0);
+
+        return PlaceResponseDto.builder()
+                .keyword(firstItem.keyword())
+                .hitCount(details.size())
+                .type(firstItem.type())
+                .relatedKeyword(details.size() > 1 ? details.subList(1, details.size()).stream().map(this::buildKeyword).toList() : Lists.newArrayList())
+                .build();
+    }
+
+    private String buildKeyword(PlaceSearchResultDetailDto detail) {
+        return String.format("%s (%s)", detail.keyword(), detail.type());
+    }
+
 }
