@@ -7,7 +7,6 @@ import sample.wooni.place.service.output.naver.response.NaverPlaceResponse;
 import sample.wooni.place.service.search.dto.PlaceSearchResultDetailDto;
 import sample.wooni.place.service.search.dto.PlaceSearchType;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,8 +31,6 @@ public class NaverPlaceConverter {
                 .keyword(formattedTitle)
                 .address(ValueConvertUtils.convertAddress((detail.address())))
                 .roadAddress(ValueConvertUtils.convertAddress((detail.roadAddress())))
-                .x(BigDecimal.valueOf(detail.mapx()))
-                .y(BigDecimal.valueOf(detail.mapy()))
                 .build();
     }
 }

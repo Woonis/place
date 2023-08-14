@@ -25,14 +25,11 @@ public class KakaoPlaceConverter {
     }
 
     private PlaceSearchResultDetailDto convert(KakaoPlaceDetail detail) {
-        ValueConvertUtils.GeoDetailDto convertedGeo = ValueConvertUtils.convert(detail.x(), detail.y());
         return PlaceSearchResultDetailDto.builder()
                 .type(PlaceSearchType.KAKAO)
                 .keyword(ValueConvertUtils.convertTitle(detail.placeName()))
                 .address(ValueConvertUtils.convertAddress(detail.addressName()))
                 .roadAddress(ValueConvertUtils.convertAddress(detail.roadAddressName()))
-                .x(convertedGeo.x())
-                .y(convertedGeo.y())
                 .build();
     }
 }

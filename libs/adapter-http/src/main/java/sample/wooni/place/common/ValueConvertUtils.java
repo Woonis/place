@@ -3,7 +3,6 @@ package sample.wooni.place.common;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,19 +23,4 @@ public class ValueConvertUtils {
 
         return address;
     }
-
-    public static ValueConvertUtils.GeoDetailDto convert(String x, String y) {
-        double coorX = Double.parseDouble(x);
-        double coorY = Double.parseDouble(y);
-
-        GeoPoint inPt = new GeoPoint(coorX, coorY);
-        GeoPoint tmPt = GeoTrans.convert(GeoTrans.GEO, GeoTrans.TM, inPt);
-        GeoPoint katecPt = GeoTrans.convert(GeoTrans.TM, GeoTrans.KATEC, tmPt);
-
-        return new ValueConvertUtils.GeoDetailDto(BigDecimal.valueOf(katecPt.getX()), BigDecimal.valueOf(katecPt.getY()));
-    }
-    public record GeoDetailDto(
-            BigDecimal x,
-            BigDecimal y
-    ){}
 }
