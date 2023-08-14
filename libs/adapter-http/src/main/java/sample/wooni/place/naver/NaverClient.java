@@ -1,6 +1,8 @@
 package sample.wooni.place.naver;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +38,9 @@ public class NaverClient implements ExternalNaverPlaceOutput {
         this.secretKey = secretKey;
         this.restTemplate = restTemplate;
     }
+
     @Override
+    @CircuitBreaker(name= "NaverClient", fallbackMethod = "defaultSearchResult")
     public List<PlaceSearchResultDetailDto> search(String keyword) {
         if (StringUtils.isBlank(keyword)) {
             throw new IllegalArgumentException("query 값은 필수 입니다.");
@@ -51,6 +55,11 @@ public class NaverClient implements ExternalNaverPlaceOutput {
         ).getBody();
 
         return NaverPlaceConverter.convert(response);
+    }
+
+    public List<PlaceSearchResultDetailDto> defaultSearchResult(String keyword, Exception e) {
+        log.error("Failed to call external NAVER api, keyword={}, message={}", keyword, e.getMessage(), e);
+        return Lists.newArrayList();
     }
 
     private String buildUri(String query) {

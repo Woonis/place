@@ -1,6 +1,8 @@
 package sample.wooni.place.kakao;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +37,7 @@ public class KakaoClient implements ExternalKakaoPlaceOutput {
     }
 
     @Override
+    @CircuitBreaker(name= "KakaoClient", fallbackMethod = "defaultSearchResult")
     public List<PlaceSearchResultDetailDto> search(String keyword) {
         if (StringUtils.isBlank(keyword)) {
             throw new IllegalArgumentException("keyword, url 값은 필수 입니다.");
@@ -49,6 +52,11 @@ public class KakaoClient implements ExternalKakaoPlaceOutput {
         ).getBody();
 
         return KakaoPlaceConverter.convert(response);
+    }
+
+    public List<PlaceSearchResultDetailDto> defaultSearchResult(String keyword, Exception e) {
+        log.error("Failed to call external KAKAO api, keyword={}, message={}", keyword, e.getMessage(), e);
+        return Lists.newArrayList();
     }
 
     // TODO size 손봐야함.
