@@ -8,7 +8,7 @@
 - Spock 기반 테스트 케이스
 
 # 빌드 결과물
-[place-api-1.0-SNAPSHOT-boot.jar]()
+[place-api-1.0-SNAPSHOT-boot.jar](https://github.com/Woonis/place/blob/main/apps/place-api/src/main/resources/place-api-1.0-SNAPSHOT-boot.jar)
 실행 : java -jar place-api-1.0-SNAPSHOT-boot.jar
 
 
