@@ -13,3 +13,6 @@ pluginManagement {
 
 rootProject.name = "place"
 include("apps:place-api")
+include("libs:adapter-http")
+include("libs:adapter-persistence")
+include("libs:application")

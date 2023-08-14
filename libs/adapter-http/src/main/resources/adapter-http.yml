@@ -1,0 +1,22 @@
+api:
+  kakao:
+    search-url: http://dapi.kakao.com/v2/local/search/keyword.json
+    key:  36eb4066c00c569786bff3d1f9b91ba2
+  naver:
+    search-url: https://openapi.naver.com/v1/search/local.json
+    client-id: L3IDPXepMiQhSXHvKxPr
+    secret-key: f3KH8ZXFmZ
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      failureRateThreshold: 50
+      slowCallRateThreshold: 100
+      slowCallDurationThreshold: 5s
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 10
+      waitDurationInOpenState: 5s
+  instances:
+    KaKaoClient:
+      registerHealthIndicator: true
+      baseConfig: default
