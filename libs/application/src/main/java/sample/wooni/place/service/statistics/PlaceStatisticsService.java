@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PlaceStatisticsService {
     List<StatisticsDto> topSearchKeywords(int limit);
-    StatisticsDto save(StatisticsCreateCommand createDto);
+    StatisticsDto save(StatisticsCreateCommand command);
 }

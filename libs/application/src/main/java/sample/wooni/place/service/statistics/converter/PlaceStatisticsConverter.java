@@ -40,9 +40,9 @@ public class PlaceStatisticsConverter {
                 .build();
     }
 
-    public PlaceStatistics convert(StatisticsCreateCommand createDto, int count) {
+    public PlaceStatistics convert(StatisticsCreateCommand command, int count) {
         return PlaceStatistics.builder()
-                .keyword(createDto.keyword())
+                .keyword(command.keyword())
                 .count(count)
                 .build();
     }

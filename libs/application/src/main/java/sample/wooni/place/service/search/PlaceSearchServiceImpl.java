@@ -1,6 +1,7 @@
 package sample.wooni.place.service.search;
 
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,10 @@ public class PlaceSearchServiceImpl implements PlaceSearchService {
 
     @Override
     public List<PlaceResponseDto> search(PlaceSearchDto request) {
+        if (Objects.isNull(request) || StringUtils.isBlank(request.keyword())) {
+            throw new IllegalArgumentException("검색 조건이 유효하지 않습니다.");
+        }
+
         var searchResults = new ArrayList<PlaceSearchResultDetailDto>();
         searchServices.forEach(
                 it -> searchResults.addAll(it.search(request.keyword()))
