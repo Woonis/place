@@ -29,11 +29,11 @@ public class ValueConvertUtils {
         double coorX = Double.parseDouble(x);
         double coorY = Double.parseDouble(y);
 
-        GeoPoint in_pt = new GeoPoint(coorX, coorY);
-        GeoPoint tm_pt = GeoTrans.convert(GeoTrans.GEO, GeoTrans.TM, in_pt);
-        GeoPoint katec_pt = GeoTrans.convert(GeoTrans.TM, GeoTrans.KATEC, tm_pt);
+        GeoPoint inPt = new GeoPoint(coorX, coorY);
+        GeoPoint tmPt = GeoTrans.convert(GeoTrans.GEO, GeoTrans.TM, inPt);
+        GeoPoint katecPt = GeoTrans.convert(GeoTrans.TM, GeoTrans.KATEC, tmPt);
 
-        return new ValueConvertUtils.GeoDetailDto(BigDecimal.valueOf(katec_pt.getX()), BigDecimal.valueOf(katec_pt.getY()));
+        return new ValueConvertUtils.GeoDetailDto(BigDecimal.valueOf(katecPt.getX()), BigDecimal.valueOf(katecPt.getY()));
     }
     public record GeoDetailDto(
             BigDecimal x,
